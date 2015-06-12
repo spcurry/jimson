@@ -137,7 +137,7 @@ module Jimson
       @helper = helper
     end
 
-    def method_missing(sym, *args, &block)
+    def method_missing(sym, args = nil, &block)
       request = Jimson::Request.new(sym.to_s, args)
       @helper.push_batch_request(request) 
     end
@@ -161,11 +161,11 @@ module Jimson
       @helper = ClientHelper.new(url, opts, namespace)
     end
 
-    def method_missing(sym, *args, &block)
+    def method_missing(sym, args = nil, &block)
       @helper.process_call(sym, args) 
     end
 
-    def [](method, *args)
+    def [](method, args = nil)
       if method.is_a?(Symbol)
         # namespace requested
         new_ns = @namespace.nil? ? "#{method}." : "#@namespace#{method}."
