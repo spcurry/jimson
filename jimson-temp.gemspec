@@ -1,10 +1,10 @@
 spec = Gem::Specification.new do |s|
-  s.name = "jimson-temp"
+  s.name = "jimson-named-parameters"
   s.version = "0.9.5"
-  s.author = "Chris Kite"
-  s.homepage = "https://github.com/mindeavor/jimson.git"
+  s.author = "Sean Curry"
+  s.homepage = "https://github.com/spcurry/jimson-named-parameters.git"
   s.platform = Gem::Platform::RUBY
-  s.summary = "JSON-RPC 2.0 client and server"
+  s.summary = "JSON-RPC 2.0 client and server, with named parameters"
   s.require_path = "lib"
   s.has_rdoc = false
   #s.rdoc_options << '-m' << 'README.rdoc' << '-t' << 'Jimson'
