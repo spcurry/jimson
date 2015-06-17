@@ -161,6 +161,10 @@ module Jimson
       @helper = ClientHelper.new(url, opts, namespace)
     end
 
+    def call_rpc(method, args = nil)
+      @helper.process_call(method.to_sym, args)
+    end
+
     def method_missing(sym, args = nil, &block)
       @helper.process_call(sym, args) 
     end
