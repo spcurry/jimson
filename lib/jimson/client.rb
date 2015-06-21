@@ -21,8 +21,8 @@ module Jimson
       @opts[:content_type] = 'application/json'
     end
 
-    def process_call(sym, args)
-      resp = send_single_request(sym.to_s, args)
+    def process_call(id, sym, args)
+      resp = send_single_request(id, sym.to_s, args)
 
       begin
         data = MultiJson.decode(resp)
@@ -37,13 +37,13 @@ module Jimson
         raise e
     end
 
-    def send_single_request(method, args)
+    def send_single_request(id, method, args)
       namespaced_method = @namespace.nil? ? method : "#@namespace#{method}"
       post_data = MultiJson.encode({
         'jsonrpc' => JSON_RPC_VERSION,
         'method'  => namespaced_method,
         'params'  => args,
-        'id'      => self.class.make_id
+        'id'      => id
       })
       resp = RestClient.post(@url, post_data, @opts)
       if resp.nil? || resp.body.nil? || resp.body.empty?
@@ -109,7 +109,7 @@ module Jimson
     end
 
     def push_batch_request(request)
-      request.id = self.class.make_id
+      request.id = self.class.make_id if request.id.blank?
       response = Response.new(request.id)
       @batch << [request, response]
       return response
@@ -128,56 +128,38 @@ module Jimson
       process_batch_response(responses)
       @batch = []
     end
-
   end
 
   class BatchClient < BlankSlate
     
-    def initialize(helper)
-      @helper = helper
+    def initialize(url, opts = {}, namespace = nil)
+      @url, @opts, @namespace = url, opts, namespace
+      @helper = ClientHelper.new(url, opts, namespace)
     end
 
-    def method_missing(sym, args = nil, &block)
-      request = Jimson::Request.new(sym.to_s, args)
+    def push_rpc(id, sym, args = nil)
+      request = Jimson::Request.new(sym.to_s, args, id)
       @helper.push_batch_request(request) 
     end
 
+    def execute_batch
+      @helper.send_batch
+    end
   end
 
   class Client < BlankSlate
     reveal :instance_variable_get
     reveal :inspect
     reveal :to_s
-    
-    def self.batch(client)
-      helper = client.instance_variable_get(:@helper)
-      batch_client = BatchClient.new(helper)
-      yield batch_client
-      helper.send_batch
-    end
 
     def initialize(url, opts = {}, namespace = nil)
       @url, @opts, @namespace = url, opts, namespace
       @helper = ClientHelper.new(url, opts, namespace)
     end
 
-    def call_rpc(method, args = nil)
-      @helper.process_call(method.to_sym, args)
+    def execute_rpc(id, method, args = nil)
+      @helper.process_call(id, method.to_sym, args)
     end
-
-    def method_missing(sym, args = nil, &block)
-      @helper.process_call(sym, args) 
-    end
-
-    def [](method, args = nil)
-      if method.is_a?(Symbol)
-        # namespace requested
-        new_ns = @namespace.nil? ? "#{method}." : "#@namespace#{method}."
-        return Client.new(@url, @opts, new_ns)
-      end
-      @helper.process_call(method, args) 
-    end
-
   end
 end
 
