@@ -1,6 +1,6 @@
 spec = Gem::Specification.new do |s|
   s.name = "jimson-named-parameters"
-  s.version = "0.9.5.5"
+  s.version = "0.9.5.6"
   s.author = "Sean Curry"
   s.homepage = "https://github.com/spcurry/jimson-named-parameters.git"
   s.platform = Gem::Platform::RUBY

@@ -74,7 +74,9 @@ module Jimson
     def process_single_response(data)
       raise Client::Error::InvalidResponse.new if !valid_response?(data)
 
-      return Response.new(data.id).populate!(data)
+      response = Response.new(data['id'])
+      response.populate!(data)
+      return response
     end
 
     def valid_response?(data)

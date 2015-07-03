@@ -1,7 +1,11 @@
+== 0.9.5.6
+
+* Fixed bug when returning Response object
+
 == 0.9.5.5
 
 * Updated Client->process_single_response so it returns Jimson Request object, instead of raising exception on error
-  received or just returning the result.
+  received or just returning the result
 
 == 0.9.5.4
 
