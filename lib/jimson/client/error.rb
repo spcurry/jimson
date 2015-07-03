@@ -1,6 +1,9 @@
 module Jimson
   class Client
     module Error
+      class StandardError < ::StandardError
+      end
+
       class InvalidResponse < StandardError
         def initialize()
           super('Invalid or empty response from server.')

@@ -1,3 +1,7 @@
+== 0.9.5.4
+
+* Added Jimson namespaced StandardError, so is_a? class inheritance checks in client.rb work correctly
+
 == 0.9.5.3
 
 * Updated Client so consumer specifies the rpc-id, instead of using randomly generated id

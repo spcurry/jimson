@@ -33,7 +33,7 @@ module Jimson
       return process_single_response(data)
 
       rescue Exception, StandardError => e
-        e.extend(Client::Error) unless e.is_a?(Client::Error)
+        e = Client::Error::StandardError.exception(e) unless e.is_a?(Client::Error::StandardError)
         raise e
     end
 
@@ -73,6 +73,9 @@ module Jimson
 
     def process_single_response(data)
       raise Client::Error::InvalidResponse.new if !valid_response?(data)
+
+      # Comment line above and uncomment line below if we don't want an exception being raised on error response
+      # return Response.new(data.id).populate!(data)
 
       if !!data['error']
         code = data['error']['code']
