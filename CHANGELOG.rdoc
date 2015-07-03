@@ -1,3 +1,17 @@
+== 0.9.5.3
+
+* Updated Client so consumer specifies the rpc-id, instead of using randomly generated id
+* Modified/fixed client request batching support
+
+== 0.9.5.2
+
+* Add Client function for calling RPC function with method name as parameter
+
+== 0.9.5.1
+
+* Forked version 0.9.5 to create jimson-named-parameters
+* Updated Client so parameter hash could be passed in (allowing named parameters)
+
 == 0.9.1 / 2012-09-18
 
 * Bug fixes
