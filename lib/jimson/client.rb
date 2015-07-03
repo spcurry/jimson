@@ -74,16 +74,7 @@ module Jimson
     def process_single_response(data)
       raise Client::Error::InvalidResponse.new if !valid_response?(data)
 
-      # Comment line above and uncomment line below if we don't want an exception being raised on error response
-      # return Response.new(data.id).populate!(data)
-
-      if !!data['error']
-        code = data['error']['code']
-        msg = data['error']['message']
-        raise Client::Error::ServerError.new(code, msg)
-      end
-
-      return data['result']
+      return Response.new(data.id).populate!(data)
     end
 
     def valid_response?(data)
