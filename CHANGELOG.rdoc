@@ -1,3 +1,7 @@
+== 0.9.5.7
+
+* Added reveal's to BatchClient
+
 == 0.9.5.6
 
 * Fixed bug when returning Response object

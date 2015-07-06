@@ -127,6 +127,9 @@ module Jimson
   end
 
   class BatchClient < BlankSlate
+    reveal :instance_variable_get
+    reveal :inspect
+    reveal :to_s
     
     def initialize(url, opts = {}, namespace = nil)
       @url, @opts, @namespace = url, opts, namespace
